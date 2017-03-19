@@ -24,29 +24,27 @@ function ex2() {
       return false;
     }
 
-    var result = [];
+    var sum = [];
     m1.forEach(function (column, x) {
-      result[x] = [];
+      sum[x] = [];
       column.forEach(function (item, y) {
-        result[x][y] = m1[x][y] + m2[x][y];
+        sum[x][y] = m1[x][y] + m2[x][y];
       });
     });
-    return result;
+    return sum;
   }
 
   // Output for index.html
   var ex2 = {};
-  ex2.output = function () {
-    console.log('demo2');
-    console.log(addMatrices(matrix1, matrix2));
-    console.log(addMatrices(matrix1, matrix3));
-
-    return '<br>matrix1: ' + matrix1 +
+  ex2.getOutput = function () {
+    return '<p>Ex2' +
+      '<br>matrix1: ' + matrix1 +
       '<br>matrix2: ' + matrix2 +
       '<br>matrix3: ' + matrix3 +
       '<br>matrix1 + matrix2: ' + addMatrices(matrix1, matrix2) +
       '<br>matrix1 + matrix3: ' + addMatrices(matrix1, matrix3);
 
   };
+
   return ex2;
 }

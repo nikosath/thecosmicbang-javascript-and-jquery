@@ -22,8 +22,9 @@ function ex1() {
 
   // Output for index.html
   var ex1 = {};
-  ex1.output = function () {
-    return '<br>array1: ' + array1 +
+  ex1.getOutput = function () {
+    return '<p>Ex1' +
+      '<br>array1: ' + array1 +
       '<br>array1 sorted: ' + array1.sort(compareAlphabetically) +
       '<br>array2: ' + array2 +
       '<br>array2 sorted: ' + array2.sort(compareAlphabetically);
