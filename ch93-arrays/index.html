@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <a href="../">Back to the Index</a>
-  <script src="js/main.js" charset="utf-8"></script>
-  <p>
-    <h3>The following scripts have been loaded on this page.</h3>
-    <h4>main.js:</h4>
-    <embed src="js/main.js">
-  </p>
-</body>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+  </head>
+
+  <body>
+
+    <a href="../">Back to the Index</a>
+    <h1>ch93 Arrays</h1>
+
+    <p id="elem">test</p>
+
+    <script src="js/1.js" charset="utf-8"></script>
+    <script src="js/2.js" charset="utf-8"></script>
+    <script src="js/3.js" charset="utf-8"></script>
+
+    <script type="text/javascript">
+      var elem = document.getElementById('elem');
+      elem.innerHTML = 'Ex1' + ex1().output() +
+        '<br>Ex2' + ex2().output();
+    </script>
+
+  </body>
+
 </html>
