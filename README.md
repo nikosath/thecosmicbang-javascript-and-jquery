@@ -3,4 +3,4 @@ My solutions to the JavaScript and jQuery task assignments for the Full Stack De
 
 ## Index
 - [Ch93 Arrays](ch93-arrays/index.html)
-- [Ch54 Arrays](ch54-functions/index.html)
+- [Ch54 Functions](ch54-functions/index.html)
