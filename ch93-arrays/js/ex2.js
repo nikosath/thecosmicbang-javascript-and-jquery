@@ -25,9 +25,11 @@ function ex2() {
     }
 
     var sum = [];
+    // for each column
     m1.forEach(function (column, x) {
       sum[x] = [];
-      column.forEach(function (item, y) {
+      // for each element of the column
+      column.forEach(function (elem, y) {
         sum[x][y] = m1[x][y] + m2[x][y];
       });
     });
@@ -38,14 +40,12 @@ function ex2() {
   var ex2 = {};
 
   ex2.getOutput = function () {
-    var output = '<p>Ex2' +
+    return '<p>Ex2' +
       '<br>matrix1: ' + matrix1 +
       '<br>matrix2: ' + matrix2 +
       '<br>matrix3: ' + matrix3 +
       '<br>matrix1 + matrix2: ' + addMatrices(matrix1, matrix2) +
       '<br>matrix1 + matrix3: ' + addMatrices(matrix1, matrix3);
-
-    return output;
   };
 
   return ex2;
