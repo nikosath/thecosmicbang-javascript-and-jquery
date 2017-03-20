@@ -36,14 +36,16 @@ function ex2() {
 
   // Output for index.html
   var ex2 = {};
+  
   ex2.getOutput = function () {
-    return '<p>Ex2' +
+    var output = '<p>Ex2' +
       '<br>matrix1: ' + matrix1 +
       '<br>matrix2: ' + matrix2 +
       '<br>matrix3: ' + matrix3 +
       '<br>matrix1 + matrix2: ' + addMatrices(matrix1, matrix2) +
       '<br>matrix1 + matrix3: ' + addMatrices(matrix1, matrix3);
 
+    return output;
   };
 
   return ex2;
