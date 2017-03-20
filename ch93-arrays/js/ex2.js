@@ -21,7 +21,7 @@ function ex2() {
     // Check for incompatible matrices
     if (m1.length !== m2.length ||
       m1[0].length !== m2[0].length) {
-      return false;
+      return 'Incompatible matrices';
     }
 
     var sum = [];
@@ -36,7 +36,7 @@ function ex2() {
 
   // Output for index.html
   var ex2 = {};
-  
+
   ex2.getOutput = function () {
     var output = '<p>Ex2' +
       '<br>matrix1: ' + matrix1 +
