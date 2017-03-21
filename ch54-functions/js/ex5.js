@@ -15,6 +15,8 @@ function ex5() {
 
   // Output for index.html
   var ex5 = {};
+  // Make capitalise() available to the next exercise, ex6.
+  ex5.capitalise = capitalise;
   ex5.getHtmlOutput = function () {
     return '<p>Ex5' +
       '<br>str: ' + str +

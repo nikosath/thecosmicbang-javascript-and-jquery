@@ -5,15 +5,16 @@ function ex6() {
   var str2 = 'we play';
   var str3 = '';
 
-  function concatenateAndUppercase() {
+  // Make capitalise() from ex5 available to ex6.
+  var capitalise = ex5().capitalise;
 
-    return arguments;
-
-    // if (str === undefined || str === '') {
-    //   return '';
-    // } else {
-    //   return str[0].toUpperCase() + str.slice(1);
-    // }
+  function concatAndUppCase() {
+    var result = [];
+    for (var i = 0; i < arguments.length; i++) {
+      result[i] = capitalise(arguments[i]);
+    }
+    // [].join(' ') returns ''
+    return result.join(' ');
   }
 
   // Output for index.html
@@ -21,11 +22,11 @@ function ex6() {
   ex6.getHtmlOutput = function () {
     return '<p>Ex6' +
       '<br>str: ' + str +
-      '<br>concatenateAndUppercase(str): ' + concatenateAndUppercase(str) +
       '<br>str2: ' + str2 +
-      '<br>concatenateAndUppercase(str2): ' + concatenateAndUppercase(str2) +
       '<br>str3: ' + str3 +
-      '<br>concatenateAndUppercase(str3): ' + concatenateAndUppercase(str3);
+      '<br>concatAndUppCase(str, str2): ' + concatAndUppCase(str, str2) +
+      '<br>concatAndUppCase(str2, str): ' + concatAndUppCase(str2, str) +
+      '<br>concatAndUppCase(str3): ' + concatAndUppCase(str3);
   };
 
   return ex6;
