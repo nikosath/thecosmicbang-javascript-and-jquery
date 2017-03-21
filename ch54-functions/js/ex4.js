@@ -32,15 +32,15 @@ function ex4() {
 
   // ES5 constructor function version of inheritance
   function Employee(name, salary, numberOfYears) {
-    this.name = name | '';
-    this.salary = salary | 0;
-    this.numberOfYears = numberOfYears | 0;
+    this.name = (name === undefined) ? '' : name;
+    this.salary = (salary === undefined) ? 0 : salary;
+    this.numberOfYears = (numberOfYears === undefined) ? 0 : numberOfYears;
   }
 
   Employee.prototype.getBonus = function () {
     switch (true) {
     case (this.numberOfYears < 0.5):
-      return 0;
+      return this.salary;
     case (this.numberOfYears <= 5):
       return this.salary / 2;
     case (this.numberOfYears <= 10):
