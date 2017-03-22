@@ -17,6 +17,14 @@ function ex6() {
     return result.join(' ');
   }
 
+  function concatAndUppCase2() {
+    var result = '';
+    for (var i = 0; i < arguments.length; i++) {
+      result += ' ' + capitalise(arguments[i]);
+    }
+    return result;
+  }
+
   // Output for index.html
   var ex6 = {};
   ex6.getHtmlOutput = function () {
@@ -26,7 +34,11 @@ function ex6() {
       '<br>str3: ' + str3 +
       '<br>concatAndUppCase(str, str2): ' + concatAndUppCase(str, str2) +
       '<br>concatAndUppCase(str2, str): ' + concatAndUppCase(str2, str) +
-      '<br>concatAndUppCase(str3): ' + concatAndUppCase(str3);
+      '<br>concatAndUppCase(str3): ' + concatAndUppCase(str3) +
+      '<br>concatAndUppCase(test case 4): ' +
+      concatAndUppCase("foo", "bar", "mary", "", "woo", "", "", "", "ball") +
+      '<br>concatAndUppCase2(test case 4): ' +
+      concatAndUppCase2("foo", "bar", "mary", "", "woo", "", "", "", "ball");
   };
 
   return ex6;

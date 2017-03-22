@@ -7,7 +7,7 @@ function ex2() {
   function getFactorial(n) {
     if (n >= 0) {
       var f = 1;
-      for (var i = 1; i <= n; i++) {
+      for (var i = 2; i <= n; i++) {
         f *= i;
       }
       return f;

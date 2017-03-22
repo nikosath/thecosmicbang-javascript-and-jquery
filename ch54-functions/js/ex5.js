@@ -8,9 +8,8 @@ function ex5() {
   function capitalise(str) {
     if (str === undefined || str === '') {
       return '';
-    } else {
-      return str[0].toUpperCase() + str.slice(1);
     }
+    return str[0].toUpperCase() + str.slice(1);
   }
 
   // Output for index.html
