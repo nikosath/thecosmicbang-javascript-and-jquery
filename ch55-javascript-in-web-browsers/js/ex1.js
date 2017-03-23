@@ -1,49 +1,62 @@
 function ex1() {
   'use strict';
 
-  var urls = ['https://www.google.com', 'http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org', 'http://www.telegraph.co.uk/', 'http://www.go2africa.com/', 'http://www.animalplanet.com/', 'http://www.theguardian.com/', 'http://travel.usnews.com/', 'http://www.independent.co.uk/'];
+  // v/ar urls = ['https://www.google.com', 'http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org', 'http://www.telegraph.co.uk/', 'http://www.go2africa.com/', 'http://www.animalplanet.com/', 'http://www.theguardian.com/', 'http://travel.usnews.com/', 'http://www.independent.co.uk/'];
 
-  function UrlTab(url, tab) {
-    return {
-      url: url,
-      tab: tab
-    };
-  }
+  var urls = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
 
-  var urlsAndTabs = [];
-  function gameOfTabs() {
-    urls.forEach(function (url) {
-      urlsAndTabs.push(UrlTab(url, window.open(url)));
-      setTimeout(function () {}, 2000);
-    });
-
-    function closeTabs() {
-      for (var phase = 1; phase >= 0 ; phase -= 1) {
-        for (var i = phase; i < urlsAndTabs.length; i += 2) {
-          urlsAndTabs[i].tab.close();
-          setTimeout(function () {}, 2000);
-        }
-      }
+  var Tabs = {
+    group: [],
+    add: function (url) {
+      this.group.push(window.open(url));
+    },
+    remove: function (idx) {
+      this.group.splice(idx, 1)[0].close();
     }
-
-    setTimeout(closeTabs, 5000);
-  }
-  // console.log(f);
-  window.setTimeout(gameOfTabs, 5000);
-
-  // Output for index.html
-  var ex1 = {};
-
-  ex1.f = f;
-  ex1.getHtmlOutput = function () {
-    return '<p>Ex1' +
-      '<br>str: ' + str +
-      '<br>str2: ' + str2 +
-      '<br>str3: ' + str3 +
-      '<br>concatAndUppCase(str, str2): ' + concatAndUppCase(str, str2) +
-      '<br>concatAndUppCase(str2, str): ' + concatAndUppCase(str2, str) +
-      '<br>concatAndUppCase(str3): ' + concatAndUppCase(str3);
   };
 
-  return ex1;
+
+
+  function schedule(urls) {
+    setTimeout(function () {
+      if (idx === urls.length - 1) {
+        Tabs.add(urls[0]);
+      } else {
+        schedule(idx + 1);
+      }
+    }, 2000);
+  }
+
+  function createTabs(urls) {
+    setTimeout(function () {
+      if (urls.length === 1) {
+        Tabs.add(urls[0]);
+      } else {
+        Tabs.add(urls.unshift());
+        createTabs(urls);
+      }
+    }, 2000);
+  }
+
+  function startGameOfTabs() {
+    // Open the first tab without delay
+    Tabs.add(urls[0]);
+    // Open the rest tabs with 2s itervals
+    for (var i = 1; i < urls.length; i++) {
+      setTimeout(Tabs.add(urls[i]), 2000);
+    }
+
+    // Close the tabs with 2s itervals
+    setTimeout(function closeTabs() {
+      for (var startIdx = 1; startIdx >= 0; startIdx -= 1) {
+        for (var i = startIdx; i < Tabs.group.length; i += 2) {
+          setTimeout(Tabs.remove(i), 2000);
+        }
+      }
+    }, 5000);
+  }
+
+  do {
+    setTimeout(startGameOfTabs, 5000);
+  } while (window.confirm('One more time?'));
 }
