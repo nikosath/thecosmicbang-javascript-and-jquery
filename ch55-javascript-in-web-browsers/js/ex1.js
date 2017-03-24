@@ -3,105 +3,198 @@ function ex1() {
 
   // v/ar urls = ['https://www.google.com', 'http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org', 'http://www.telegraph.co.uk/', 'http://www.go2africa.com/', 'http://www.animalplanet.com/', 'http://www.theguardian.com/', 'http://travel.usnews.com/', 'http://www.independent.co.uk/'];
 
-  var urls = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
+  // var urls = ['http://127.0.0.1:8080/'];
+  var urls = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
+  // var urls = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
 
   var tabs = {
-    group: [],
-    add: function (url) {
-      this.group.push(window.open(url));
+    tabGroup: [],
+    // getTab: function (index) {
+    //   return this.tabGroup[index];
+    // },
+
+    // Mappings between the perceived position of every tab and its actual index in tabGroup
+    PosToIdx: [],
+
+    // storeIdx: function (index) {
+    //   this.PosToIdx.push(index);
+    // },
+    push: function (url) {
+      this.tabGroup.push(window.open(url));
+      this.PosToIdx.push(this.PosToIdx.length);
     },
-    remove: function (idx) {
-      this.group.splice(idx, 1)[0].close();
+    // PosToIdx: function (id) {
+    //   return PosToIdx[id];
+    // },
+    adjustIndices: function (posToRemove) {
+      this.PosToIdx[posToRemove] = null;
+      var offset = 1;
+      for (var i = posToRemove + 1; i < this.PosToIdx.length; i++) {
+        this.PosToIdx[posToRemove] -= offset;
+        offset -= 1;
+      }
     },
+    // Remove by perceived position
+    removeByPosition: function (pos) {
+      var index = this.PosToIdx[pos];
+      this.tabGroup.splice(index, 1)[0].close();
+      this.adjustIndices(pos);
+    },
+    // removeByIdx: function (index) {
+    //   this.tabGroup.splice(index, 1)[0].close();
+    // },
+    // removeByTab: function (tab) {
+    //   this.tabGroup.splice(index, 1)[0].close();
+    // },
     length: function () {
-      return this.group.length;
+      return this.tabGroup.length;
+    },
+    addMany: function (urls) {
+      var tabs = this;
+      tabs.push(urls[0]);
+      urls = urls.slice(1);
+      if (urls.length > 0) {
+        setTimeout(function () {
+          if (urls.length === 1) {
+            // Add the last url
+            tabs.push(urls[0]);
+            // tabs.push(urls.shift());
+
+            // Start the removal proccess, with the 2nd tab
+            // setTimeout(destroyTabs, 5000, tabs, 1);
+          } else {
+            tabs.addMany(urls);
+          }
+        }, 2000);
+      }
+    },
+    removeMany: function (tabPositions) {
+      var tabs = this;
+      tabs.removeByPosition(tabPositions[0]);
+      tabPositions = tabPositions.slice(1);
+
+      if (tabPositions.length > 0) {
+        setTimeout(function () {
+          if (tabPositions.length === 1) {
+            // Add the last url
+            tabs.removeByPosition(tabPositions[0]);
+            // tabs.push(tabPositions.shift());
+
+            // Start the removal proccess, with the 2nd tab
+            // setTimeout(destroyTabs, 5000, tabs, 1);
+          } else {
+            tabs.removeMany(tabPositions);
+          }
+        }, 2000);
+      }
+
     }
+    // removeMany3: function (sequence, offset) {
+    //   var tabs = this;
+    //   offset = (offset === undefined) ? 0 : offset;
+    //   tabs.removeByIdx(sequence[0] - offset);
+    //   sequence = sequence.slice(1);
+    //
+    //   if (sequence.length > 0) {
+    //     setTimeout(function () {
+    //       if (sequence.length === 1) {
+    //         // Add the last url
+    //         tabs.removeByIdx(sequence[0]);
+    //         // tabs.push(sequence.shift());
+    //
+    //         // Start the removal proccess, with the 2nd tab
+    //         // setTimeout(destroyTabs, 5000, tabs, 1);
+    //       } else {
+    //         tabs.removeMany(sequence);
+    //       }
+    //     }, 2000);
+    //   }
+    //
+    // }
+    // removeMany2: function (sequence) {
+    //
+    //   if (index < this.length()) {
+    //     this.removeByIdx(index);
+    //     index += 2;
+    //   }
+    //
+    //   if (this.length() > 0) {
+    //     setTimeout(function () {
+    //       if (this.length() === 1) {
+    //         // Remove last tab
+    //         this.removeByIdx(0);
+    //       } else if (index >= this.length()) {
+    //         // Continue the removal proccess, with the 1st tab
+    //         this.removeMany(this, 0);
+    //       } else {
+    //         // this.removeByIdx(index);
+    //         this.removeMany(sequence);
+    //       }
+    //     }, 2000);
+    //   }
+    //
+    // }
   };
 
-  function createTabs(urls, tabs) {
-    tabs.add(urls.shift());
-    if (urls.length > 0) {
-      setTimeout(function () {
-        if (urls.length === 1) {
-          // Add the last url
-          tabs.add(urls[0]);
-          // Start the removal proccess, with the 2nd tab
-          console.log(new Date());
-          // setTimeout(destroyTabs(tabs, 1), 10000);
-          setTimeout(destroyTabs, 5000, tabs, 1);
-          // console.log(new Date());
-          // setTimeout(function () {
-          //   console.log(new Date());
-          // }, 5000);
+  // tabs.addMany = function addMany (urls) {
+  //   this.push(urls[0]);
+  //   urls = urls.slice(1);
+  //   if (urls.length > 0) {
+  //     setTimeout(function () {
+  //       if (urls.length === 1) {
+  //         // Add the last url
+  //         this.push(urls[0]);
+  //         // this.push(urls.shift());
+  //
+  //         // Start the removal proccess, with the 2nd tab
+  //         // setTimeout(destroyTabs, 5000, this, 1);
+  //       } else {
+  //         this.addMany(urls);
+  //       }
+  //     }, 2000);
+  //   }
+  // };
 
-        } else {
-          // tabs.add(urls.shift());
-          createTabs(urls, tabs);
-        }
-      }, 2000);
-    }
-  }
-
-  function destroyTabs(tabs, idx) {
+  function debug() {
     console.log(new Date());
 
-    if (idx < tabs.length()) {
-      tabs.remove(idx);
-      idx += 2;
-    }
-    if (tabs.length() > 0) {
-      setTimeout(function () {
-        if (tabs.length() === 1) {
-          // Remove last tab
-          tabs.remove(0);
-        } else if (idx >= tabs.length()) {
-          // Continue the removal proccess, with the 1st tab
-          destroyTabs(tabs, 0);
-        } else {
-          // tabs.remove(idx);
-          destroyTabs(tabs, idx);
-        }
-      }, 2000);
-    }
   }
 
-  // function destroyTabs2(tabs, idx) {
-  //   setTimeout(function () {
-  //     if (tabs.length() === 1) {
-  //       // Remove last tab
-  //       tabs.remove(0);
-  //     } else if (idx >= tabs.length()) {
-  //       // Continue the removal proccess, with the 1st tab
-  //       destroyTabs(tabs, 0);
-  //     } else {
-  //       tabs.remove(idx);
-  //       destroyTabs(tabs, idx + 2);
-  //     }
-  //   }, 2000);
+  // function createTabs2(urls, tabs) {
+  //   tabs.push(urls[0]);
+  //   urls = urls.slice(1);
+  //   if (urls.length > 0) {
+  //     setTimeout(function () {
+  //       if (urls.length === 1) {
+  //         // Add the last url
+  //         tabs.push(urls[0]);
+  //         // tabs.push(urls.shift());
+  //
+  //         // Start the removal proccess, with the 2nd tab
+  //         // setTimeout(destroyTabs, 5000, tabs, 1);
+  //       } else {
+  //         addMany(urls, tabs);
+  //       }
+  //     }, 2000);
+  //   }
   // }
 
-  function startGameOfTabs() {
-    // Open the first tab without delay
-    // tabs.add(urls[0]);
-    // Open the rest tabs with 2s itervals
-    // createTabs(urls.slice(1));
-    // createTabs(urls, tabs);
+  setTimeout(function () {
+    tabs.addMany(urls);
 
-    // for (var i = 1; i < urls.length; i++) {
-    //   setTimeout(tabs.add(urls[i]), 2000);
-    // }
-
-    // Close the tabs with 2s itervals
-    // setTimeout(function closeTabs() {
-    //   for (var startIdx = 1; startIdx >= 0; startIdx -= 1) {
-    //     for (var i = startIdx; i < tabs.length(); i += 2) {
-    //       setTimeout(tabs.remove(i), 2000);
-    //     }
-    //   }
-    // }, 5000);
-  }
-
-  setTimeout(createTabs(urls, tabs), 5000);
+    var tabPositionsForRemoval = [];
+    for (var base = 1; base >= 0; base -= 1) {
+      for (var idx = base; idx < tabs.length(); idx += 2) {
+        tabPositionsForRemoval.push(idx);
+      }
+    }
+    // debug();
+    // setTimeout(debug, 5000);
+    setTimeout(function () {
+      tabs.removeMany(tabPositionsForRemoval);
+    }, 5000);
+    // setTimeout(tabs.removeMany.call(tabs,  tabPositionsForRemoval), 5000);
+  }, 5000);
   // do {
   // } while (window.confirm('One more time?'));
 }
