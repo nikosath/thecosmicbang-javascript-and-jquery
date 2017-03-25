@@ -1,200 +1,137 @@
 function ex1() {
   'use strict';
 
-  // v/ar urls = ['https://www.google.com', 'http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org', 'http://www.telegraph.co.uk/', 'http://www.go2africa.com/', 'http://www.animalplanet.com/', 'http://www.theguardian.com/', 'http://travel.usnews.com/', 'http://www.independent.co.uk/'];
+  // var URLS = ['https://www.google.com', 'http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org', 'http://www.telegraph.co.uk/', 'http://www.go2africa.com/', 'http://www.animalplanet.com/', 'http://www.theguardian.com/', 'http://travel.usnews.com/', 'http://www.independent.co.uk/'];
+  // var URLS = ['http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org'];
 
   // var urls = ['http://127.0.0.1:8080/'];
-  var urls = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
+  // var URLS = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
+  var URLS = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
   // var urls = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
 
   var tabs = {
     tabGroup: [],
-    // getTab: function (index) {
-    //   return this.tabGroup[index];
-    // },
 
-    // Mappings between the perceived position of every tab and its actual index in tabGroup
-    PosToIdx: [],
-
-    // storeIdx: function (index) {
-    //   this.PosToIdx.push(index);
-    // },
-    push: function (url) {
+    add: function (url) {
+      console.log(time() + ' add tab ' + url);
       this.tabGroup.push(window.open(url));
-      this.PosToIdx.push(this.PosToIdx.length);
+      // console.log(time() + ' tab name ' + this.tabGroup[0].name);
+
     },
-    // PosToIdx: function (id) {
-    //   return PosToIdx[id];
-    // },
-    adjustIndices: function (posToRemove) {
-      this.PosToIdx[posToRemove] = null;
-      var offset = 1;
-      for (var i = posToRemove + 1; i < this.PosToIdx.length; i++) {
-        this.PosToIdx[posToRemove] -= offset;
-        offset -= 1;
-      }
+    removeByIdx: function (index) {
+      var tab = this.tabGroup.splice(index, 1)[0].close();
+      console.log(time() + ' remove tab with idx:' + index);
+      // tab.close();
     },
-    // Remove by perceived position
-    removeByPosition: function (pos) {
-      var index = this.PosToIdx[pos];
-      this.tabGroup.splice(index, 1)[0].close();
-      this.adjustIndices(pos);
-    },
-    // removeByIdx: function (index) {
-    //   this.tabGroup.splice(index, 1)[0].close();
-    // },
-    // removeByTab: function (tab) {
-    //   this.tabGroup.splice(index, 1)[0].close();
-    // },
     length: function () {
       return this.tabGroup.length;
     },
-    addMany: function (urls) {
+    addMany: function (urls, nextFunction) {
+      // console.log('nextFunction ' + nextFunction);
       var tabs = this;
-      tabs.push(urls[0]);
+      tabs.add(urls[0]);
       urls = urls.slice(1);
+      console.log(urls.length);
       if (urls.length > 0) {
         setTimeout(function () {
+          console.log(urls.length);
           if (urls.length === 1) {
             // Add the last url
-            tabs.push(urls[0]);
-            // tabs.push(urls.shift());
-
-            // Start the removal proccess, with the 2nd tab
-            // setTimeout(destroyTabs, 5000, tabs, 1);
+            tabs.add(urls[0]);
+            // If nextFunction was provided, call it
+            // console.log('nextFunction ' + nextFunction);
+            if (nextFunction) {
+              nextFunction();
+            }
           } else {
-            tabs.addMany(urls);
+            tabs.addMany(urls, nextFunction);
           }
-        }, 2000);
+        }, 1000);
       }
     },
-    removeMany: function (tabPositions) {
-      var tabs = this;
-      tabs.removeByPosition(tabPositions[0]);
-      tabPositions = tabPositions.slice(1);
-
-      if (tabPositions.length > 0) {
-        setTimeout(function () {
-          if (tabPositions.length === 1) {
-            // Add the last url
-            tabs.removeByPosition(tabPositions[0]);
-            // tabs.push(tabPositions.shift());
-
-            // Start the removal proccess, with the 2nd tab
-            // setTimeout(destroyTabs, 5000, tabs, 1);
-          } else {
-            tabs.removeMany(tabPositions);
+    tweakIndices: function (tabIndices) {
+      console.log('Indices before tweaking: ' + tabIndices);
+      for (var i = 1; i < tabIndices.length; i++) {
+        for (var j = 0; j < i; j++) {
+          if (tabIndices[j] <= tabIndices[i]) {
+            tabIndices[i] -= 1;
           }
-        }, 2000);
+        }
       }
+      console.log('Indices after tweaking: ' + tabIndices);
+      return tabIndices;
+    },
+    removeTweakedIndices: function (tabIndices) {
+      var tabs = this;
+      tabs.removeByIdx(tabIndices[0]);
+      tabIndices = tabIndices.slice(1);
 
+      if (tabIndices.length > 0) {
+        setTimeout(function () {
+          if (tabIndices.length === 1) {
+            // Remove the last url
+            tabs.removeByIdx(tabIndices[0]);
+
+          } else {
+            tabs.removeTweakedIndices(tabIndices);
+          }
+        }, 1000);
+      }
+    },
+    removeMany: function (tabIndices) {
+      this.removeTweakedIndices(this.tweakIndices(tabIndices));
     }
-    // removeMany3: function (sequence, offset) {
-    //   var tabs = this;
-    //   offset = (offset === undefined) ? 0 : offset;
-    //   tabs.removeByIdx(sequence[0] - offset);
-    //   sequence = sequence.slice(1);
-    //
-    //   if (sequence.length > 0) {
-    //     setTimeout(function () {
-    //       if (sequence.length === 1) {
-    //         // Add the last url
-    //         tabs.removeByIdx(sequence[0]);
-    //         // tabs.push(sequence.shift());
-    //
-    //         // Start the removal proccess, with the 2nd tab
-    //         // setTimeout(destroyTabs, 5000, tabs, 1);
-    //       } else {
-    //         tabs.removeMany(sequence);
-    //       }
-    //     }, 2000);
-    //   }
-    //
-    // }
-    // removeMany2: function (sequence) {
-    //
-    //   if (index < this.length()) {
-    //     this.removeByIdx(index);
-    //     index += 2;
-    //   }
-    //
-    //   if (this.length() > 0) {
-    //     setTimeout(function () {
-    //       if (this.length() === 1) {
-    //         // Remove last tab
-    //         this.removeByIdx(0);
-    //       } else if (index >= this.length()) {
-    //         // Continue the removal proccess, with the 1st tab
-    //         this.removeMany(this, 0);
-    //       } else {
-    //         // this.removeByIdx(index);
-    //         this.removeMany(sequence);
-    //       }
-    //     }, 2000);
-    //   }
-    //
-    // }
+
   };
 
-  // tabs.addMany = function addMany (urls) {
-  //   this.push(urls[0]);
-  //   urls = urls.slice(1);
-  //   if (urls.length > 0) {
-  //     setTimeout(function () {
-  //       if (urls.length === 1) {
-  //         // Add the last url
-  //         this.push(urls[0]);
-  //         // this.push(urls.shift());
-  //
-  //         // Start the removal proccess, with the 2nd tab
-  //         // setTimeout(destroyTabs, 5000, this, 1);
-  //       } else {
-  //         this.addMany(urls);
-  //       }
-  //     }, 2000);
-  //   }
-  // };
+  function time() {
+    var time = new Date();
+    return (time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+  }
 
-  function debug() {
-    console.log(new Date());
+  function removeEvenOdd() {
+    var tabIndicesToRemove = [];
+    for (var base = 1; base >= 0; base -= 1) {
+      for (var idx = base; idx < tabs.length(); idx += 2) {
+        tabIndicesToRemove.push(idx);
+      }
+    }
+    // tabIndicesToRemove = [3,2,7,1,4,6,5,0];
+    console.log('Indices before tweaking: ' + tabIndicesToRemove);
+
+    setTimeout(function () {
+      tabs.removeMany(tabIndicesToRemove);
+    }, 1000);
 
   }
 
-  // function createTabs2(urls, tabs) {
-  //   tabs.push(urls[0]);
-  //   urls = urls.slice(1);
-  //   if (urls.length > 0) {
-  //     setTimeout(function () {
-  //       if (urls.length === 1) {
-  //         // Add the last url
-  //         tabs.push(urls[0]);
-  //         // tabs.push(urls.shift());
-  //
-  //         // Start the removal proccess, with the 2nd tab
-  //         // setTimeout(destroyTabs, 5000, tabs, 1);
-  //       } else {
-  //         addMany(urls, tabs);
-  //       }
-  //     }, 2000);
-  //   }
+  // function startGame() {
+  //   tabs.addMany(URLS, removeEvenOdd);
   // }
-
-  setTimeout(function () {
-    tabs.addMany(urls);
-
-    var tabPositionsForRemoval = [];
-    for (var base = 1; base >= 0; base -= 1) {
-      for (var idx = base; idx < tabs.length(); idx += 2) {
-        tabPositionsForRemoval.push(idx);
-      }
-    }
-    // debug();
-    // setTimeout(debug, 5000);
-    setTimeout(function () {
-      tabs.removeMany(tabPositionsForRemoval);
-    }, 5000);
-    // setTimeout(tabs.removeMany.call(tabs,  tabPositionsForRemoval), 5000);
-  }, 5000);
   // do {
+  //   console.log(time() + ' before addMany');
+  //   setTimeout(startGame, 1000);
   // } while (window.confirm('One more time?'));
+
+// -----------------
+  var chain = delayFunc(function () {
+    chain = chain.delayFunc(tabs.add, 1, tabs, URLS[0]);
+    for (var i = 1; i < URLS.length; i++) {
+      chain = chain.delayFunc(tabs.add, 2000, tabs, URLS[i]);
+    }
+
+  }, 5000);
+
+  chain = chain.delayFunc(function () {
+    // tabIndicesToRemove = tabs.tweakIndices([3,2,7,1,4,6,5,0]);
+    var tabIndicesToRemove = tabs.tweakIndices([0,1,2]);
+    // chain = chain.delayFunc(tabs.removeMany, 5000, tabIndicesToRemove);
+    chain = chain.delayFunc(tabs.removeByIdx, 0, tabIndicesToRemove[0]);
+    for (var j = 1; j < tabIndicesToRemove.length; j++) {
+      chain = chain.delayFunc(tabs.removeByIdx, 2000, tabIndicesToRemove[j]);
+    }
+
+  }, 5000);
+
+
 }

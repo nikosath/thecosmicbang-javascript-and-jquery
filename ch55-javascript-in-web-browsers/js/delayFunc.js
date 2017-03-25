@@ -2,25 +2,30 @@ function delayFunc(fn, t) {
     // private instance variables
     var queue = [], self, timer;
 
-    function schedule(fn, t) {
+    function schedule(fn, t, that, arg) {
         timer = setTimeout(function() {
             timer = null;
-            fn();
+            if (that) {
+              that.fn(arg);
+            } else {
+              fn();
+            }
             if (queue.length) {
                 var item = queue.shift();
-                schedule(item.fn, item.t);
+                schedule(item.fn, item.t, item.that, item.arg);
             }
         }, t);
     }
     self = {
-        delayFunc: function(fn, t) {
+        delayFunc: function(fn, t, that, arg) {
+          console.log(arguments);
             // if already queuing things or running a timer,
             //   then just add to the queue
         	  if (queue.length || timer) {
-                queue.push({fn: fn, t: t});
+                queue.push({fn: fn, t: t, that: that, arg: arg});
             } else {
                 // no queue or timer yet, so schedule the timer
-                schedule(fn, t);
+                schedule(fn, t, that, arg);
             }
             return self;
         },
