@@ -32,22 +32,25 @@ function delayFunc(fn, t) {
     return self.delayFunc(fn, t);
 }
 
-// function time() {
-//   var time = new Date();
-//   return (time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
-// }
-// var log = console.log;
-//
-// function log1() {
-// 	  log(time() +  " Message 1");
-// }
-// function log2() {
-// 	  log(time() + " Message 2");
-// }
-// function log3() {
-// 	  log(time() + " Message 3");
-// }
+function time() {
+  var time = new Date();
+  return (time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+}
+var log = console.log;
+
+function log1() {
+	  log(time() +  " Message 1");
+}
+function log2() {
+	  log(time() + " Message 2");
+}
+function log3() {
+	  log(time() + " Message 3");
+}
 
 // var d = delayFunc(log1, 2000)
 //     .delayFunc(log2, 2000)
 //     .delayFunc(log3, 2000);
+var d = delayFunc(log1, 2000);
+    d = d.delayFunc(log2, 2000);
+    d = d.delayFunc(log3, 2000);

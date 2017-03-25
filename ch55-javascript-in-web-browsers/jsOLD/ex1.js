@@ -5,8 +5,8 @@ function ex1() {
   // var URLS = ['http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org'];
 
   // var URLS = ['http://1/','http://2/'];
-  // var URLS = ['http://1/'];
-  var URLS = ['http://1/', 'http://2/', 'http://3/', 'http://4/', 'http://5/', 'http://6/'];
+  var URLS = ['http://1/'];
+  // var URLS = ['http://1/', 'http://2/', 'http://3/', 'http://4/', 'http://5/', 'http://6/'];
   // var URLS = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
   // var URLS = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/','http://127.0.0.1:8080/'];
   // var urls = ['http://127.0.0.1:8080/', 'http://127.0.0.1:8080/', 'http://127.0.0.1:8080/'];
