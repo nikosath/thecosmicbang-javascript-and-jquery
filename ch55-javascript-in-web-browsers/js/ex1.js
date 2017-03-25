@@ -5,80 +5,75 @@ function ex1() {
   var URLS = ['http://1/', 'http://2/', 'http://3/', 'http://4/', 'http://5/', 'http://6/'];
   // var URLS = ['http://1/', 'http://2/'];
 
-  var tabs = {
-    tabGroup: [],
-
-    add: function (url) {
-      console.log(time() + ' add tab ' + url);
-      this.tabGroup.push(window.open(url));
-    },
-    removeByIdx: function (index) {
-      this.tabGroup.splice(index, 1)[0].close();
-      console.log(time() + ' remove tab with idx:' + index);
-    },
-    removeTab: function (tab) {
-      // console.log(time() + ' remove tab:' + tab);
-      tab.close();
-    },
-    length: function () {
-      return this.tabGroup.length;
-    },
-    tweakIndices: function (tabIndices) {
-      console.log('Indices before tweaking: ' + tabIndices);
-      for (var i = 1; i < tabIndices.length; i++) {
-        for (var j = 0; j < i; j++) {
-          if (tabIndices[j] <= tabIndices[i]) {
-            tabIndices[i] -= 1;
-          }
-        }
-      }
-      console.log('Indices after tweaking: ' + tabIndices);
-      return tabIndices;
-    },
-
-  };
-
   function time() {
     var time = new Date();
     return (time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
   }
 
-  function getEvenOddIndices(tabs) {
-    var tabIndicesToRemove = [];
-    for (var base = 1; base >= 0; base -= 1) {
-      for (var idx = base; idx < tabs.length(); idx += 2) {
-        tabIndicesToRemove.push(idx);
+  var tabs = {
+    // holds all the windows we open
+    tabGroup: [],
+    open: function (url) {
+      console.log(time() + ' open tab ' + url);
+      this.tabGroup.push(window.open(url));
+    },
+    close: function (tab) {
+      tab.close();
+    },
+    length: function () {
+      return this.tabGroup.length;
+    },
+    // returns a group of tabs based on a condition
+    filter: function (condition) {
+      var filteredTabs = [];
+      this.tabGroup.forEach(function (tab, idx) {
+        if (condition(tab, idx)) {
+          filteredTabs.push(tab);
+        }
+      });
+      return filteredTabs;
+    },
+    openMany: function (urls, delay, fnChain) {
+      delay = (delay === undefined) ? 0 : delay;
+      fnChain = (fnChain === undefined) ? new FuncChain() : fnChain;
+      // open the first with 0 delay
+      fnChain.addFunc(this.open, 0, this, urls[0]);
+      for (var i = 1; i < urls.length; i++) {
+        fnChain.addFunc(this.open, delay, this, urls[i]);
+      }
+    },
+    closeMany: function (tabsToClose, delay, fnChain) {
+      delay = (delay === undefined) ? 0 : delay;
+      fnChain = (fnChain === undefined) ? new FuncChain() : fnChain;
+      // close the first with 0 delay
+      fnChain.addFunc(this.close, 0, this, tabsToClose[0]);
+      for (var j = 1; j < tabsToClose.length; j++) {
+        fnChain.addFunc(this.close, 2000, this, tabsToClose[j]);
       }
     }
-    return tabIndicesToRemove;
-  }
-  function getEvenOddTabs(tabs) {
-    var evenOddTabs = [];
-    for (var base = 1; base >= 0; base -= 1) {
-      for (var idx = base; idx < tabs.length(); idx += 2) {
-        evenOddTabs.push(tabs.tabGroup[idx]);
-      }
-    }
-    return evenOddTabs;
+
+  };
+
+  function selectTabs() {
+    var evenTabs = tabs.filter(function (tab, idx) {
+      return idx % 2 !== 0;
+    });
+    var oddTabs = tabs.filter(function (tab, idx) {
+      return idx % 2 === 0;
+    });
+    return evenTabs.concat(oddTabs);
   }
 
   function main() {
-    var chain = new FuncChain();
-    chain.addFunc(function () {
-      chain.addFunc(tabs.add, 0, tabs, URLS[0]);
-      for (var i = 1; i < URLS.length; i++) {
-        chain.addFunc(tabs.add, 2000, tabs, URLS[i]);
-      }
+    var fnChain = new FuncChain();
+    fnChain.addFunc(function () {
+      tabs.openMany(URLS, 2000, fnChain);
 
-      chain.addFunc(function () {
-        var tabToRemove = getEvenOddTabs(tabs);
-        chain.addFunc(tabs.removeTab, 0, tabs, tabToRemove[0]);
-        for (var j = 1; j < tabToRemove.length; j++) {
-          chain.addFunc(tabs.removeTab, 2000, tabs, tabToRemove[j]);
-        }
+      fnChain.addFunc(function () {
+        tabs.closeMany(selectTabs(), 2000, fnChain);
 
-        chain.addFunc(function () {
-          if (window.confirm('Go one more time?')) {
+        fnChain.addFunc(function () {
+          if (window.confirm('Start again?')) {
             main();
           }
         }, 0);
@@ -87,31 +82,6 @@ function ex1() {
 
     }, 5000);
   }
-  // function main() {
-  //   var chain = new FuncChain();
-  //   chain.addFunc(function () {
-  //     chain.addFunc(tabs.add, 0, tabs, URLS[0]);
-  //     for (var i = 1; i < URLS.length; i++) {
-  //       chain.addFunc(tabs.add, 2000, tabs, URLS[i]);
-  //     }
-  //
-  //     chain.addFunc(function () {
-  //       var tabIndicesToRemove = tabs.tweakIndices(getEvenOddIndices(tabs));
-  //       chain.addFunc(tabs.removeByIdx, 0, tabs, tabIndicesToRemove[0]);
-  //       for (var j = 1; j < tabIndicesToRemove.length; j++) {
-  //         chain.addFunc(tabs.removeByIdx, 2000, tabs, tabIndicesToRemove[j]);
-  //       }
-  //
-  //       chain.addFunc(function () {
-  //         if (window.confirm('Go one more time?')) {
-  //           main();
-  //         }
-  //       }, 0);
-  //
-  //     }, 5000);
-  //
-  //   }, 5000);
-  // }
 
   main();
 
