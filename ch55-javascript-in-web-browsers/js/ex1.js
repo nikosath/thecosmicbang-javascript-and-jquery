@@ -6,6 +6,10 @@ var ex1 = function () {
   // var URLS = ['http://1/', 'http://2/', 'http://3/', 'http://4/', 'http://5/', 'http://6/'];
   // var URLS = ['http://1/', 'http://2/'];
   var URLS = ['http://1/'];
+  var OPENING_PHASE_DELAY = 5000;
+  var CLOSING_PHASE_DELAY = 5000;
+  var TAB_OPENING_DELAY = 2000;
+  var TAB_CLOSING_DELAY = 2000;
 
   function selectTabs() {
     var evenTabs = tabs.filter(function (tab, idx) {
@@ -40,10 +44,10 @@ var ex1 = function () {
   function main() {
     var fnQueue = new FuncQueue();
     fnQueue.addFunc(function () {
-      tabs.openMany(URLS, 2000, fnQueue);
+      tabs.openMany(URLS, TAB_OPENING_DELAY, fnQueue);
 
       fnQueue.addFunc(function () {
-        tabs.closeMany(selectTabs(), 2000, fnQueue);
+        tabs.closeMany(selectTabs(), TAB_CLOSING_DELAY, fnQueue);
 
         fnQueue.addFunc(function () {
           if (window.confirm('Start again?')) {
@@ -51,9 +55,9 @@ var ex1 = function () {
           }
         }, 0);
 
-      }, 5000);
+      }, CLOSING_PHASE_DELAY);
 
-    }, 5000);
+    }, OPENING_PHASE_DELAY);
   }
 
   main();
