@@ -1,4 +1,4 @@
-function FuncChain() {
+function FuncQueue() {
   'use strict';
   // queue of functions waiting to be scheduled
   this.queue = [];
@@ -6,9 +6,9 @@ function FuncChain() {
   this.currentlyScheduled = null;
 }
 
-FuncChain.prototype = {
+FuncQueue.prototype = {
   // this is a JavaScript convention
-  constructor: FuncChain,
+  constructor: FuncQueue,
 
   // fn: function to be delayed/scheduled
   // delay: passed to setTimeout
@@ -49,6 +49,7 @@ FuncChain.prototype = {
         that: that,
         arg: arg
       });
+      // else schedule it right away
     } else {
       this.schedule(fn, delay, that, arg);
     }
