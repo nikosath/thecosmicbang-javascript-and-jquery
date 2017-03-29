@@ -1,5 +1,5 @@
 /**
-* A collection of open tabs. The tabs we open get added to the group, and those we close, get removed. We can open/close multiple tabs with a specified delay in between every single opening/closing.
+* A collection of open tabs. The tabs we open get added to it, and those we close, get removed. We can open/close multiple tabs with a specified delay in between every single opening/closing.
 * @constructor
 * @requires FuncQueue
 */

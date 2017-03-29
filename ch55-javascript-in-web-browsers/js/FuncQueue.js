@@ -1,3 +1,6 @@
+/**
+ * A FIFO queue for functions waiting to be scheduled for execution
+ */
 function FuncQueue() {
   'use strict';
   // queue of functions waiting to be scheduled
@@ -40,6 +43,17 @@ FuncQueue.prototype = {
   // delay: passed to setTimeout
   // that: what 'this' should be inside fn
   // arg: a single argument for fn
+  //
+
+
+  /**
+   * Adds a function in the FIFO queue, waiting for its turn to become scheduled. Or
+   * schedules it immediately, if no other function has been scheduled (pending). Only one function can be scheduled, at any given time.
+   * @param  {Function} fn - Function to be delayed/scheduled
+   * @param  {number} delay - Time delay in milliseconds
+   * @param  {Object} [that] - What 'this' will refer to, from inside fn
+   * @param  {} [arg] - Argument of any type, that we'll call fn with
+   */
   addFunc: function (fn, delay, that, arg) {
     // if there's another function scheduled, put fn in the queue
     if (this.currentlyScheduled) {

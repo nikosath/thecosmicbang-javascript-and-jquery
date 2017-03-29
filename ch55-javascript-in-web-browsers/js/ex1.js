@@ -21,26 +21,6 @@ var ex1 = function () {
     return evenTabs.concat(oddTabs);
   }
 
-  var tabs = new Tabs();
-
-  // function main() {
-  //   var fnQueue = new FuncQueue();
-  //   fnQueue.addFunc(function () {
-  //     tabs.openMany(URLS, 2000, fnQueue);
-  //   }, 5000);
-  //
-  //   fnQueue.addFunc(function () {
-  //     tabs.closeMany(selectTabs(), 2000, fnQueue);
-  //   }, 5000);
-  //
-  //   fnQueue.addFunc(function () {
-  //     if (window.confirm('Start again?')) {
-  //       main();
-  //     }
-  //   }, 0);
-  //
-  // }
-
   function main() {
     var fnQueue = new FuncQueue();
     fnQueue.addFunc(function () {
@@ -60,5 +40,6 @@ var ex1 = function () {
     }, OPENING_PHASE_DELAY);
   }
 
+  var tabs = new Tabs();
   main();
 };
