@@ -1,11 +1,19 @@
 /**
- * A FIFO queue for functions waiting to be scheduled for execution
+ * Used with 'new', it creates a FuncQueue object.
+ * @constructor
+ * @classdesc A FIFO queue for functions waiting to be scheduled for execution.
  */
 function FuncQueue() {
   'use strict';
-  // queue of functions waiting to be scheduled
+  /**
+   * Queue of functions waiting to be scheduled.
+   * @type {Function[]}
+   */
   this.queue = [];
-  // currently scheduled function and its arguments
+  /**
+   * An array that holds the currently scheduled function and any optional accompanying values.
+   * @type {Array}
+   */
   this.currentlyScheduled = null;
 }
 
