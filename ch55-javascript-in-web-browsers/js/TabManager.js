@@ -36,7 +36,7 @@ TabManager.prototype = {
     this.openTabs.push(window.open(url));
   },
   /**
-   * Number of open tabs.
+   * Returns the number of open tabs.
    */
   length: function () {
     return this.openTabs.length;

@@ -1,8 +1,8 @@
 /**
-* @classdesc A function scheduler. It ensures the invocation of a series of
+* @classdesc A function scheduler. It allows the invocation of a series of
 * functions one right after the other, with a specified delay before each
 * invocation. It utilizes a FIFO queue for any functions waiting to be
-* scheduled for execution. Only one function can be at the scheduled
+* scheduled for invocation. Only one function can be at the scheduled
 * state/slot, at any given time.
 * @constructor
 */
