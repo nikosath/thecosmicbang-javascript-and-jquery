@@ -57,7 +57,7 @@ var ex1 = (function () {
    */
   function openTabsCloseTabs() {
     tabs.openMany(URLS, SINGLE_OPENING_DELAY);
-    scheduler.addFunc(closeTabs(), CLOSING_PHASE_DELAY);
+    scheduler.addFunc(closeTabs, CLOSING_PHASE_DELAY);
   }
 
   function main() {
@@ -66,7 +66,7 @@ var ex1 = (function () {
     // It will hold and help us manage, all the tabs we open.
     var tabs = new TabManager(scheduler);
     // We begin by scheduling a new phase of openings and closings.
-    scheduler.addFunc(openTabsCloseTabs(), INITIAL_DELAY);
+    scheduler.addFunc(openTabsCloseTabs, INITIAL_DELAY);
   }
 
   return {
