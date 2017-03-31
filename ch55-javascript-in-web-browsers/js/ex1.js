@@ -1,7 +1,7 @@
-// requires FuncScheduler, Tabs
-
 /**
  * A module of sorts, for the purpose of minimizing global namespace pollution.
+ * @requires FuncScheduler.js
+ * @requires Tabs.js
  */
 var ex1 = (function () {
   'use strict';
@@ -18,11 +18,17 @@ var ex1 = (function () {
   var TAB_OPENING_DELAY = 2000;
   var TAB_CLOSING_DELAY = 2000;
 
+
+  /**
+   * The one and only instance of FuncScheduler this exercise uses
+   * @type {FuncScheduler}
+   */
+  var scheduler = new FuncScheduler();
   /**
    * The instance of Tabs that the following, top level functions are using.
    * @type {Tabs}
    */
-  var tabs = new Tabs();
+  var tabs = new Tabs(scheduler);
 
   /**
    * Returns an array of all the currently open tabs in the following order: first the even positioned windows (the 2nd, the 4th, the 6th, the 8th and the 10th) and then the odd positioned windows (the 1st, the 3rd, the 5th, the 7th and the 9th).
@@ -42,19 +48,15 @@ var ex1 = (function () {
    * The main/starting function of this exercise.
    */
   function main() {
-    /**
-     * The one and only instance of FuncScheduler this exercise uses
-     * @type {FuncScheduler}
-     */
-    var fnQueue = new FuncScheduler();
+
     // First we send to the queue
-    fnQueue.addFunc(function () {
-      tabs.openMany(URLS, TAB_OPENING_DELAY, fnQueue);
+    scheduler.addFunc(function () {
+      tabs.openMany(URLS, TAB_OPENING_DELAY);
 
-      fnQueue.addFunc(function () {
-        tabs.closeMany(selectEvenOddTabs(), TAB_CLOSING_DELAY, fnQueue);
+      scheduler.addFunc(function () {
+        tabs.closeMany(selectEvenOddTabs(), TAB_CLOSING_DELAY);
 
-        fnQueue.addFunc(function () {
+        scheduler.addFunc(function () {
           if (window.confirm('Start again?')) {
             main();
           }

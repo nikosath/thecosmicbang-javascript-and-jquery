@@ -1,18 +1,17 @@
 /**
- * Used with 'new', it creates a FuncScheduler object.
+* @class A function scheduler for ensuring the invocation of numerous functions right one after the other, with a specified delay before each invocation. It utilizes a FIFO queue for any functions waiting to be scheduled for execution. Only one function can be at the scheduled state/slot, at any given time.
  * @constructor
- * @classdesc A scheduler for ensuring the invocation of numerous functions one after the other, with a specified delay before each invocation. It utilizes a FIFO queue for any functions waiting to be scheduled for execution. Only one function can be at the scheduled state/slot, at any given time.
  */
 function FuncScheduler() {
   'use strict';
   /**
    * Queue of functions waiting to be scheduled.
-   * @type {Function[]}
+   * @property {Function[]}
    */
   this.queue = [];
   /**
    * Holds the currently scheduled function and any of its optional accompanying values (i.e. 'this' reference, and the function's argument).
-   * @type {Array}
+   * @property {Array}
    */
   this.currentlyScheduled = null;
 }
