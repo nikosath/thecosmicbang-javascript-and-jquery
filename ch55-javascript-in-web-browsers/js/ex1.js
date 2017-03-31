@@ -2,7 +2,7 @@
  * Returns an object, with main() as the only public method (Revealing Module
  * Pattern).
  * @requires FuncScheduler.js
- * @requires Tabs.js
+ * @requires TabManager.js
  * @return {Object}
  */
 var ex1 = (function () {
@@ -60,21 +60,11 @@ var ex1 = (function () {
     scheduler.addFunc(closeTabs(), CLOSING_PHASE_DELAY);
   }
 
-  /**
-   * The main/starting function of this exercise.
-   */
   function main() {
-    /**
-     * The one and only instance of FuncScheduler this exercise uses.
-     * @type {FuncScheduler}
-     */
+    // Our function scheduler.
     var scheduler = new FuncScheduler();
-    /**
-     * The instance of Tabs that the following, top level functions are using.
-     * @type {Tabs}
-     */
-    var tabs = new Tabs(scheduler);
-
+    // It will hold and help us manage, all the tabs we open.
+    var tabs = new TabManager(scheduler);
     // We begin by scheduling a new phase of openings and closings.
     scheduler.addFunc(openTabsCloseTabs(), INITIAL_DELAY);
   }

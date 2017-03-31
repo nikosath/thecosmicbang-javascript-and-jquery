@@ -1,5 +1,5 @@
 /**
-* @class A function scheduler. It ensures the invocation of a series of
+* @classdesc A function scheduler. It ensures the invocation of a series of
 * functions one right after the other, with a specified delay before each
 * invocation. It utilizes a FIFO queue for any functions waiting to be
 * scheduled for execution. Only one function can be at the scheduled
@@ -21,10 +21,7 @@ function FuncScheduler() {
   this.currentlyScheduled = null;
 }
 
-/**
- * Holds FuncScheduler's instance methods.
- * @type {Object}
- */
+// FuncScheduler's instance methods.
 FuncScheduler.prototype = {
   // This is a JavaScript convention.
   constructor: FuncScheduler,
