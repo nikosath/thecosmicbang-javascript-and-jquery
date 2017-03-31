@@ -1,19 +1,18 @@
 /**
  * @fileoverview
  * @requires FuncScheduler.js
- * @requires
  * @type {Array}
  */
 
 /**
-* A collection of open tabs. The tabs we open get added to it, and those we close, get removed. We can open/close multiple tabs with a specified delay in between every single opening/closing.
+* A collection of open tabs. The tabs we open get added to it, and those we close, get removed. We can open/close multiple tabs, with a specified delay in between every single opening/closing.
 * @constructor
 */
 function Tabs(scheduler) {
   'use strict';
   // Holds all the windows we open
   this.openTabs = [];
-  this.scheduler = scheduler;
+  this.scheduler = (scheduler === undefined) ? new FuncScheduler() : scheduler;
 }
 
 Tabs.prototype = {

@@ -1,7 +1,9 @@
 /**
- * A module of sorts, for the purpose of minimizing global namespace pollution.
+ * Returns an object, with main() as the only public method (Revealing Module
+ * Pattern).
  * @requires FuncScheduler.js
  * @requires Tabs.js
+ * @return {Object}
  */
 var ex1 = (function () {
   'use strict';
@@ -13,25 +15,16 @@ var ex1 = (function () {
   // var URLS = ['https://www.google.com', 'http://www.nationalgeographic.com', 'http://cnn.com', 'https://www.zsl.org', 'http://www.telegraph.co.uk/', 'http://www.go2africa.com/', 'http://www.animalplanet.com/', 'http://www.theguardian.com/', 'http://travel.usnews.com/', 'http://www.independent.co.uk/'];
 
   // Time delays before each phase or action (milliseconds).
-  var OPENING_PHASE_DELAY = 5000;
+  var INITIAL_DELAY = 5000;
   var CLOSING_PHASE_DELAY = 5000;
-  var TAB_OPENING_DELAY = 2000;
-  var TAB_CLOSING_DELAY = 2000;
-
-
-  /**
-   * The one and only instance of FuncScheduler this exercise uses
-   * @type {FuncScheduler}
-   */
-  var scheduler = new FuncScheduler();
-  /**
-   * The instance of Tabs that the following, top level functions are using.
-   * @type {Tabs}
-   */
-  var tabs = new Tabs(scheduler);
+  var SINGLE_OPENING_DELAY = 2000;
+  var SINGLE_CLOSING_DELAY = 2000;
 
   /**
-   * Returns an array of all the currently open tabs in the following order: first the even positioned windows (the 2nd, the 4th, the 6th, the 8th and the 10th) and then the odd positioned windows (the 1st, the 3rd, the 5th, the 7th and the 9th).
+   * Returns an array of all the currently open tabs in the following order:
+   * first the even positioned windows (the 2nd, the 4th, the 6th, the 8th and
+   * the 10th) and then the odd positioned windows (the 1st, the 3rd, the 5th,
+   * the 7th and the 9th).
    * @return {Window[]}
    */
   function selectEvenOddTabs() {
@@ -45,27 +38,48 @@ var ex1 = (function () {
   }
 
   /**
+   * Schedules the closings of the selected tabs, with SINGLE_CLOSING_DELAY, in
+   * between each closing. Then it schedules prompting the user for starting a
+   * new phase of openings and closings.
+   */
+  function closeTabs() {
+    tabs.closeMany(selectEvenOddTabs(), SINGLE_CLOSING_DELAY);
+    scheduler.addFunc(function () {
+      if (window.confirm('Start again?')) {
+        main();
+      }
+    }, 0);
+  }
+
+  /**
+   * Schedules the openings of the selected tabs with SINGLE_OPENING_DELAY,
+   * in between each opening. Then it schedules the closing phase.
+   */
+  function openTabsCloseTabs() {
+    tabs.openMany(URLS, SINGLE_OPENING_DELAY);
+    scheduler.addFunc(closeTabs(), CLOSING_PHASE_DELAY);
+  }
+
+  /**
    * The main/starting function of this exercise.
    */
   function main() {
+    /**
+     * The one and only instance of FuncScheduler this exercise uses.
+     * @type {FuncScheduler}
+     */
+    var scheduler = new FuncScheduler();
+    /**
+     * The instance of Tabs that the following, top level functions are using.
+     * @type {Tabs}
+     */
+    var tabs = new Tabs(scheduler);
 
-    // First we send to the queue
-    scheduler.addFunc(function () {
-      tabs.openMany(URLS, TAB_OPENING_DELAY);
-
-      scheduler.addFunc(function () {
-        tabs.closeMany(selectEvenOddTabs(), TAB_CLOSING_DELAY);
-
-        scheduler.addFunc(function () {
-          if (window.confirm('Start again?')) {
-            main();
-          }
-        }, 0);
-
-      }, CLOSING_PHASE_DELAY);
-
-    }, OPENING_PHASE_DELAY);
+    // We begin by scheduling a new phase of openings and closings.
+    scheduler.addFunc(openTabsCloseTabs(), INITIAL_DELAY);
   }
 
-  return {main: main};
+  return {
+    main: main
+  };
 })();

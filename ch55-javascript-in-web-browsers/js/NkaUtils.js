@@ -1,5 +1,5 @@
 /**
- * @fileoverview Utilities for debugging.
+ * @fileoverview Utilities mostly for debugging.
  */
 var NkaUtils = (function() {
   'use strict';
