@@ -1,7 +1,7 @@
 /**
 * A collection of open tabs. The tabs we open get added to it, and those we close, get removed. We can open/close multiple tabs with a specified delay in between every single opening/closing.
 * @constructor
-* @requires FuncQueue
+* @requires FuncScheduler
 */
 function Tabs() {
   'use strict';
@@ -32,7 +32,7 @@ Tabs.prototype = {
   },
   openMany: function (urls, delay, fnQueue) {
     delay = (delay === undefined) ? 0 : delay;
-    fnQueue = (fnQueue === undefined) ? new FuncQueue() : fnQueue;
+    fnQueue = (fnQueue === undefined) ? new FuncScheduler() : fnQueue;
     // open the first with 0 delay
     fnQueue.addFunc(this.open, 0, this, urls[0]);
     for (var i = 1; i < urls.length; i++) {
@@ -49,7 +49,7 @@ Tabs.prototype = {
   },
   closeMany: function (tabs, delay, fnQueue) {
     delay = (delay === undefined) ? 0 : delay;
-    fnQueue = (fnQueue === undefined) ? new FuncQueue() : fnQueue;
+    fnQueue = (fnQueue === undefined) ? new FuncScheduler() : fnQueue;
     // close the first with 0 delay
     fnQueue.addFunc(tabs[0].close, 0, tabs[0]);
     for (var j = 1; j < tabs.length; j++) {
