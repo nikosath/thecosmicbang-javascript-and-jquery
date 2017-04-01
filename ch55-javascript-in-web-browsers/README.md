@@ -60,7 +60,7 @@ scheduler.addFunc(function f4 () {
 }, 1000, this, arg);
 ```
 
-## The problem
+## The problem that led to all of this
 
 After an initial delay of 5sec, open a bunch of tabs with a delay of 2sec in between each opening. Then wait 5sec and start closing those tabs with a 2sec delay in between each closing. The closing should happen in the following order: first the even positioned tabs (e.g. the 2nd, the 4th, the 6th, the 8th and the 10th) and then the odd positioned tabs (e.g. the 1st, the 3rd, the 5th, the 7th and the 9th). At the end, prompt the user, asking whether a new phase/circle of openings/closings should begin. Use setTimeout() or/and setInterval().
 
@@ -68,8 +68,8 @@ After an initial delay of 5sec, open a bunch of tabs with a delay of 2sec in bet
 
 In my analysis, I decided that, for each circle/phase of openings and closings, I had to schedule 3 + (2 * number_of_tabs) events/actions. One after the other with a specified delay in between each event. I think that, if I could use something like a pause(), things would be simpler. With the restriction of having to use setTimeout() or/and setInterval(), I came up with a solution that uses setTimeout to set timers, which when they fire, they use setTimeout to schedule the next event/action.
 
-In particular this is the series of events we have to schedule/delay for one circle:
-  Start(Openings(Closing phase(Closings(Start over()))))
+In particular this is the series of events we have to schedule/delay for just one circle/phase:
+> Start(Openings(Closing phase(Closings(Start over()))))
 
 For my implementation, I created two classes. Firstly, TabManager, that holds all our tabs together as one group, and has methods for opening/closing those tabs with a specified delay in between each action. Secondly, FuncScheduler, which TabManager relies on, is a quite generic function scheduler, in the sense that it doesn't know anytyhing about tabs, and it can schedule any action whatsoever, as long as, it's in the form a function.
 
