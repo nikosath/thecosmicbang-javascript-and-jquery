@@ -92,7 +92,7 @@ TabManager.prototype = {
     for (var j = 1; j < tabs.length; j++) {
       this.scheduler.addFunc(tabs[j].close, delay, tabs[j]);
     }
-    // Remove tabs that we closed, from our group with the open ones.
+    // Remove the tabs that we closed, from our group with the open ones.
     this.scheduler.addFunc(this.removeClosedTabs, 0, this);
   }
 

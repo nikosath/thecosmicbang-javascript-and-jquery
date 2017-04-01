@@ -1,11 +1,11 @@
 /**
-* @classdesc A function scheduler. It allows the invocation of a series of
-* functions one right after the other, with a specified delay before each
-* invocation. It utilizes a FIFO queue for any functions waiting to be
-* scheduled for invocation. Only one function can be at the scheduled
-* state/slot, at any given time.
-* @constructor
-*/
+ * @classdesc A function scheduler. It allows the invocation of a series of
+ * functions one right after the other, with a specified delay before each
+ * invocation. It utilizes a FIFO queue for any functions waiting to be
+ * scheduled for invocation. Only one function can be at the scheduled
+ * state/slot, at any given time.
+ * @constructor
+ */
 function FuncScheduler() {
   'use strict';
   /**
@@ -87,3 +87,15 @@ FuncScheduler.prototype = {
     }
   }
 };
+
+var scheduler = new FuncScheduler();
+var delay1 = 2000;
+var delay2 = 5000;
+
+scheduler.addFunc(function f1 () {
+// do stuff
+}, delay1);
+
+scheduler.addFunc(function f2 () {
+// do even more stuff
+}, delay2);
