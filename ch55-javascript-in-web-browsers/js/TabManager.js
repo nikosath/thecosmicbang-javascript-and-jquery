@@ -1,6 +1,6 @@
 /**
 * @classdesc Tab manager. More specifically, a grouping of tabs that we can
-*  manage. The tabs we open get added to it, and those we close, get removed.
+*  manage. The tabs we open get added to an instance of this class, and those we close, get removed.
 *  We can open/close multiple tabs, with a specified
 *  delay in between every single opening/closing.
 * @requires FuncScheduler.js
