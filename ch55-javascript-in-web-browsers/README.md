@@ -4,8 +4,8 @@
 
 If you want to see the demo in action, please visit the [github project page](http://www.nikosath.space/thecosmicbang-javascript-and-jquery/ch55-javascript-in-web-browsers/index.html).
 
-Class FuncScheduler
-
+#### Class FuncScheduler example
+```javascript
 // In the following example f2 gets invoked after 7sec, and f4 after 9sec
 
 var scheduler = new FuncScheduler();
@@ -29,6 +29,7 @@ scheduler.addFunc(function f3 () {
 scheduler.addFunc(function f4 () {
 // do even more stuff
 }, 500, this, arg);
+```
 
 ## The problem
 
