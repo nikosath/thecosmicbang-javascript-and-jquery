@@ -36,9 +36,7 @@ function ex2() {
       return false; // allow event propagation and prevent default action
     };
 
-    // Using this method, chrome shows blue & red/green colors at the same time.
-    // Firefox doesn't respond at all! (IE11 works fine! In a parallel universe)
-    inputName.addEventListener('focus', function () {
+    inputColor.addEventListener('focus', function () {
       this.style = "border: 2px solid blue;";
       return false; // allow event propagation and allow default action
     });
