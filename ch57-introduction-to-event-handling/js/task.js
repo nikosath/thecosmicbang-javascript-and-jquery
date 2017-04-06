@@ -33,7 +33,7 @@ function ex2() {
 
     inputName.onfocus = function () {
       this.style = "border: 2px solid blue;";
-      return false; // allow event propagation and prevent default action
+      return false; // allow event propagation and PREVENT default action
     };
 
     inputColor.addEventListener('focus', function () {
